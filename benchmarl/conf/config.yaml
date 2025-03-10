@@ -1,5 +1,5 @@
 defaults:
-  - experiment: base_experiment
+  - experiment: experiment
   - algorithm: ???
   - task: ???
   - model: layers/mlp

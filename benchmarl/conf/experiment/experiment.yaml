@@ -1,0 +1,8 @@
+defaults:
+  - base_experiment
+  - _self_
+
+save_folder: ./logs
+loggers: [wandb]
+
+max_n_frames: 3_000_000
