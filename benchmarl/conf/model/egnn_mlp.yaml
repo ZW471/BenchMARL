@@ -13,3 +13,6 @@ intermediate_sizes: [256] # Example -> [256]
 # layers:
 #  l1:
 #    num_cells: [4]
+layers:
+  l1:
+    edge_radius: 4

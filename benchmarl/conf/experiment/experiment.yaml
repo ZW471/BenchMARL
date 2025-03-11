@@ -5,4 +5,17 @@ defaults:
 save_folder: ./logs
 loggers: [wandb]
 
+# The device for collection (e.g. cuda)
+sampling_device: "cuda"
+# The device for training (e.g. cuda)
+train_device: "cuda"
+# The device for the replay buffer of off-policy algorithms (e.g. cuda).
+# Use "disk" to store it on disk (in the experiment save_folder)
+buffer_device: "cuda"
+
 max_n_frames: 3_000_000
+on_policy_n_envs_per_worker: 6000
+on_policy_minibatch_size: 15000
+off_policy_n_envs_per_worker: 6000
+off_policy_train_batch_size: 5120
+evaluation_episodes: 20 # Number of vmas vectorized enviornemnts used in evaluation
