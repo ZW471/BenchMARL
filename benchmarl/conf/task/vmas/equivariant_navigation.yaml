@@ -5,11 +5,9 @@ defaults:
 
 
 max_steps: 100
-n_agents: 3
-collisions: True
-agents_with_same_goal: 1
-split_goals: False
-observe_all_goals: False
+n_agents_holonomic: 0
+n_agents_diff_drive: 4
+n_agents_car: 0
 shared_rew: False
 lidar_range: 0.35
 agent_radius: 0.1

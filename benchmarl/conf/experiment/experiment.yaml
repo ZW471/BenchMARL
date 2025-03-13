@@ -6,3 +6,4 @@ save_folder: ./logs
 loggers: [wandb]
 
 max_n_frames: 3_000_000
+share_policy_params: False

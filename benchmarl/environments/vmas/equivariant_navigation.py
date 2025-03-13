@@ -10,11 +10,10 @@ from dataclasses import dataclass, MISSING
 @dataclass
 class TaskConfig:
     max_steps: int = MISSING
-    n_agents: int = MISSING
-    collisions: bool = MISSING
-    agents_with_same_goal: int = MISSING
-    observe_all_goals: bool = MISSING
+    n_agents_holonomic: int = MISSING
+    n_agents_diff_drive: int = MISSING
+    n_agents_car: int = MISSING
     shared_rew: bool = MISSING
-    split_goals: bool = MISSING
     lidar_range: float = MISSING
     agent_radius: float = MISSING
+
