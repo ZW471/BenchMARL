@@ -16,4 +16,4 @@ class TaskConfig:
     shared_rew: bool = MISSING
     lidar_range: float = MISSING
     agent_radius: float = MISSING
-
+    comms_rendering_range: float = MISSING

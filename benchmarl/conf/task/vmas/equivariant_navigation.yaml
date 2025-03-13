@@ -11,3 +11,4 @@ n_agents_car: 0
 shared_rew: False
 lidar_range: 0.35
 agent_radius: 0.1
+comms_rendering_range: 4
