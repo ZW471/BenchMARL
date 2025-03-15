@@ -1,6 +1,6 @@
 name: egnn
 
-topology: full
+topology: from_pos
 self_loops: False
 
 gnn_class: models.layers.egnn.EGNNLayer
@@ -13,4 +13,4 @@ velocity_key: vel
 vel_features: 2
 
 exclude_pos_from_node_features: True
-edge_radius: 4
+edge_radius: 1

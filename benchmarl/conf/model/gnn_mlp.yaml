@@ -15,4 +15,10 @@ intermediate_sizes: [256] # Example -> [256]
 #    num_cells: [4]
 layers:
   l1:
-    edge_radius: 4
+    edge_radius: 1
+    topology: from_pos
+    position_key: pos
+    pos_features: 2
+    velocity_key: vel
+    vel_features: 2
+    self_loops: True
