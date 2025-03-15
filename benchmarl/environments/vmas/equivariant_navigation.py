@@ -17,3 +17,4 @@ class TaskConfig:
     lidar_range: float = MISSING
     agent_radius: float = MISSING
     comms_rendering_range: float = MISSING
+    n_obstacles: int = MISSING
