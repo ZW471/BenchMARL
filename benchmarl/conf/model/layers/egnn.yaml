@@ -1,6 +1,6 @@
 name: egnn
 
-topology: from_pos
+topology: full
 self_loops: False
 
 gnn_class: models.layers.egnn.EGNNLayer

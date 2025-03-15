@@ -13,9 +13,19 @@ train_device: "cuda"
 # Use "disk" to store it on disk (in the experiment save_folder)
 buffer_device: "cuda"
 
-max_n_frames: 3_000_000
-on_policy_n_envs_per_worker: 6000
-on_policy_minibatch_size: 15000
-off_policy_n_envs_per_worker: 6000
-off_policy_train_batch_size: 5120
-evaluation_episodes: 20 # Number of vmas vectorized enviornemnts used in evaluation
+max_n_frames: 10_000_000
+evaluation_interval: 100_000
+# For on-policy training:
+on_policy_n_envs_per_worker: 1000             # Increased from 10
+on_policy_collected_frames_per_batch: 100_000     # Increased from 6000 (scaling data collection proportionally)
+on_policy_minibatch_size: 100_000                  # Increased from 400 to keep the same relative minibatch ratio
+on_policy_n_minibatch_iters: 45                 # Can remain the same if you’re still targeting ~3 epochs over the batch
+#
+## For off-policy training:
+#off_policy_n_envs_per_worker: 600             # Increased from 10
+#off_policy_collected_frames_per_batch: 60_000     # Increased from 6000
+#off_policy_train_batch_size: 1_280                # Increased from 128 to sample more data per training step
+#off_policy_n_optimizer_steps: 10_000              # Increased from 1000 to process the larger data volume
+#off_policy_memory_size: 1_000_000               # Increased from 1_000_000 to accommodate more experiences
+#
+evaluation_episodes: 200
