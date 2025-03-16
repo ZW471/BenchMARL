@@ -186,6 +186,7 @@ class GcpNet(Gnn):
         forward_gnn_params = {
             "s": graph.x,
             "v": graph.vel,
+            "pos": graph.pos,
             "frames": frames,
             "edge_index": graph.edge_index,
         }
