@@ -13,7 +13,7 @@ train_device: "cuda"
 # Use "disk" to store it on disk (in the experiment save_folder)
 buffer_device: "cuda"
 
-max_n_frames: 10_000_000
+max_n_frames: 3_000_000
 evaluation_interval: 400_000
 # For on-policy training:
 on_policy_n_envs_per_worker: 1000             # Increased from 10

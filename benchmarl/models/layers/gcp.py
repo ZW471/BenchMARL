@@ -100,7 +100,7 @@ class GCPMessagePassing(MessagePassing):
             self.activation
         )
         self.gcp_fusion = GCP(scaler_emb_dim, vector_emb_dim,
-                              scaler_emb_dim * 2, vector_emb_dim * 2, localized=True)
+                              scaler_emb_dim * 2, vector_emb_dim * 2 + 1, localized=True)
         self.scalar_att = torch.nn.Sequential(
             torch.nn.Linear(scaler_emb_dim, 1),
             torch.nn.Sigmoid()
@@ -125,14 +125,14 @@ class GCPMessagePassing(MessagePassing):
         v_j = recover(v_j)
         frames_i = recover(frames_i)
         frames_j = recover(frames_j)
-        displacements = localize(pos_i - pos_j, frames_j)
+        displacements = localize(pos_i - pos_j, frames_j).unsqueeze(1)
 
         # s_i: destination (target), s_j: source.
         # Build scalar message: concatenate source and destination scalars.
         x_ij = torch.cat([s_j, s_i], dim=-1)
         # For vector messages, localize both source and target features.
-        v_i = (localize(v_i.transpose(-1, -2), torch.bmm(frames_i.transpose(-1, -2), frames_j)) + displacements.unsqueeze(1)).transpose(-1, -2)
-        v_ij = torch.cat([v_j, v_i], dim=-1)
+        v_i = (localize(v_i.transpose(-1, -2), torch.bmm(frames_i.transpose(-1, -2), frames_j)) + displacements).transpose(-1, -2)
+        v_ij = torch.cat([v_j, v_i, displacements.transpose(-1, -2)], dim=-1)
 
         x_ij, v_ij = self.gcp_fusion(x_ij, v_ij, None)
 
