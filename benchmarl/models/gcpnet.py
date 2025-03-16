@@ -18,9 +18,9 @@ from tensordict import TensorDictBase
 from tensordict.utils import _unravel_key_to_tuple, NestedKey
 from torch import nn, Tensor
 
-from benchmarl.models import Gnn
-from benchmarl.models.common import Model, ModelConfig
-from benchmarl.models.gnn import _get_edge_index, _batch_from_dense_to_ptg
+from .gnn import Gnn
+from .common import Model, ModelConfig
+from .gnn import _get_edge_index, _batch_from_dense_to_ptg
 
 _has_torch_geometric = importlib.util.find_spec("torch_geometric") is not None
 if _has_torch_geometric:
@@ -167,6 +167,10 @@ class GcpNet(Gnn):
         else:
             vel = None
 
+        frames = tensordict.get(self._get_key_terminating_with(
+            list(tensordict.keys(True, True)), "frames"
+        )).view(-1, 2, 2)
+
         input = torch.cat(input, dim=-1)
 
         batch_size = input.shape[:-2]
@@ -180,8 +184,9 @@ class GcpNet(Gnn):
             edge_radius=self.edge_radius,
         )
         forward_gnn_params = {
-            "h": graph.x,
-            "pos": graph.pos,
+            "s": graph.x,
+            "v": graph.vel,
+            "frames": frames,
             "edge_index": graph.edge_index,
         }
         if (

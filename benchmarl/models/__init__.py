@@ -13,6 +13,7 @@ from .common import (
     SequenceModelConfig,
 )
 from .deepsets import Deepsets, DeepsetsConfig
+from .gcpnet import GcpNet, GcpNetConfig
 from .gnn import Gnn, GnnConfig
 from .gru import Gru, GruConfig
 from .lstm import Lstm, LstmConfig
@@ -34,6 +35,8 @@ classes = [
     "LstmConfig",
     "Egnn",
     "EgnnConfig",
+    "Gcp",
+    "GcpConfig",
 ]
 
 model_config_registry = {
@@ -44,4 +47,5 @@ model_config_registry = {
     "gru": GruConfig,
     "lstm": LstmConfig,
     "egnn": EgnnConfig,
+    "gcpnet": GcpNetConfig
 }

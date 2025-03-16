@@ -1,0 +1,16 @@
+name: gcpnet
+
+topology: from_pos
+self_loops: False
+
+gnn_class: models.layers.gcp.GCPMessagePassing
+gnn_kwargs:
+  aggr: "add"
+
+position_key: pos
+pos_features: 2
+velocity_key: vel
+vel_features: 4
+
+exclude_pos_from_node_features: True
+edge_radius: 1
