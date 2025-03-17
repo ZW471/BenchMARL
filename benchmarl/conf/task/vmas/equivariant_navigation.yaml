@@ -7,10 +7,11 @@ defaults:
 max_steps: 100
 n_agents_holonomic: 0
 n_agents_diff_drive: 0
-n_agents_car: 6
+n_agents_car: 8
 n_obstacles: 0
 shared_rew: False
-lidar_range: 0.0
+lidar_range: 0.2
 agent_radius: 0.05
 comms_rendering_range: 1
+exclude_vel_from_obs: False
 

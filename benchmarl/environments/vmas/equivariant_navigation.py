@@ -18,3 +18,4 @@ class TaskConfig:
     agent_radius: float = MISSING
     comms_rendering_range: float = MISSING
     n_obstacles: int = MISSING
+    exclude_vel_from_obs: bool = MISSING
