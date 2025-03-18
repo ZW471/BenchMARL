@@ -83,7 +83,7 @@ class GCP(torch.nn.Module):
 class GCPMessagePassing(MessagePassing):
     def __init__(self, in_channels, out_channels, aggr="sum"):
         super().__init__(aggr=aggr)
-        self.activation = torch.nn.SiLU()
+        self.activation = torch.nn.Tanh()
         # Define embedding dimensions.
         scaler_emb_dim = out_channels
         vector_emb_dim = out_channels // 4
@@ -110,6 +110,8 @@ class GCPMessagePassing(MessagePassing):
             torch.nn.Sigmoid()
         )
 
+        self.gcp_out = GCP(scaler_emb_dim, vector_emb_dim, localized=True)
+
     def forward(self, s, v, pos, frames, edge_index):
         # Reshape vector features as in the original code.
         v = v.view(-1, v.shape[-1] // 2, 2).transpose(-1, -2)  # [num_nodes, 2, f]
@@ -118,6 +120,10 @@ class GCPMessagePassing(MessagePassing):
         # Flip edge_index so that first row becomes source and second row destination.
         s_update, v_update = self.propagate(edge_index, s=s, v=flatten(v), pos=pos, frames=flatten(frames))
         s = s + s_update
+        v = v + recover(v_update)
+
+        s, v = self.gcp_out(s, v, None)
+
         return s
 
     def message(self, s_i, s_j, v_i, v_j, pos_i, pos_j, frames_i, frames_j):

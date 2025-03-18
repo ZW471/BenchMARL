@@ -20,5 +20,5 @@ layers:
     position_key: pos
     pos_features: 2
     velocity_key: vel
-    vel_features: 2
+    vel_features: 4
     self_loops: True
