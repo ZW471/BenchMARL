@@ -29,7 +29,7 @@ class GCP(torch.nn.Module):
         self.vector_emb_dim = vector_emb_dim
         self.scaler_in_dim = scaler_in_dim if scaler_in_dim is not None else self.scalar_emb_dim
         self.vector_in_dim = vector_in_dim if vector_in_dim is not None else self.vector_emb_dim
-        self.activation = torch.nn.SiLU()
+        self.activation = torch.nn.Tanh()
         self.localized = localized
 
         self.D_s = torch.nn.Sequential(
@@ -86,19 +86,20 @@ class GCPMessagePassing(MessagePassing):
         self.activation = torch.nn.Tanh()
         # Define embedding dimensions.
         scaler_emb_dim = out_channels
-        vector_emb_dim = out_channels // 4
+        vector_emb_dim = out_channels
         scaler_in_dim = in_channels
         vector_in_dim = 2
 
         # Initialize modules.
-        self.scaler_emb = torch.nn.Sequential(
-            torch.nn.Linear(scaler_in_dim, scaler_emb_dim),
-            self.activation
-        )
-        self.vector_emb = torch.nn.Sequential(
-            torch.nn.Linear(vector_in_dim, vector_emb_dim),
-            self.activation
-        )
+        # self.scaler_emb = torch.nn.Sequential(
+        #     torch.nn.Linear(scaler_in_dim, scaler_emb_dim),
+        #     self.activation
+        # )
+        # self.vector_emb = torch.nn.Sequential(
+        #     torch.nn.Linear(vector_in_dim, vector_emb_dim),
+        #     self.activation
+        # )
+        self.gcp_emb = GCP(scaler_emb_dim, vector_emb_dim, scaler_in_dim, vector_in_dim, localized=True)
         self.gcp_fusion = GCP(scaler_emb_dim, vector_emb_dim,
                               scaler_emb_dim * 2, vector_emb_dim * 2 + 1, localized=True)
         self.scalar_att = torch.nn.Sequential(
@@ -115,8 +116,10 @@ class GCPMessagePassing(MessagePassing):
     def forward(self, s, v, pos, frames, edge_index):
         # Reshape vector features as in the original code.
         v = v.view(-1, v.shape[-1] // 2, 2).transpose(-1, -2)  # [num_nodes, 2, f]
-        s = self.scaler_emb(s)
-        v = self.vector_emb(v)
+        # s = self.scaler_emb(s)
+        # v = self.vector_emb(v)
+
+        s, v = self.gcp_emb(s, v, None)
         # Flip edge_index so that first row becomes source and second row destination.
         s_update, v_update = self.propagate(edge_index, s=s, v=flatten(v), pos=pos, frames=flatten(frames))
         s = s + s_update
